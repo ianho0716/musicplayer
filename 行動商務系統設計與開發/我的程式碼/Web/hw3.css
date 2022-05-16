@@ -1,0 +1,137 @@
+.bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -999;
+    opacity: 0.4;
+}
+
+    .bg img {
+        min-height: 100%;
+        width: 100%;
+    }
+
+#ControlPanel {
+    border: 3px solid;
+    width: 700px;
+    height: 400px;
+    margin: auto;
+    text-align: center;
+    cursor: pointer;
+}
+
+    #ControlPanel > span {
+        border: 2px solid;
+        padding: 3px;
+        box-shadow: 2px 2px 5px blue;
+        cursor: pointer;
+        font-family: Webdings;
+        font-size: 3rem;
+        border-radius: 50%;
+    }
+
+#song,
+#info {
+    width: inherit;
+    font-size: 2em;
+    text-align: center;
+    background-color: black;
+    color: yellow;
+}
+
+#info {
+    font-size: 2rem;
+}
+
+.btnVol {
+    border-radius: 50%;
+    border: 5px groove white;
+    box-shadow: 2px 2px 8px blue;
+}
+
+#volValue {
+    width: 80%;
+    height: 8px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: 3px solid #808080;
+    background-color: #6fe2f2;
+    outline: none;
+}
+
+    #volValue::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 35px;
+        height: 25px;
+        background-color: #4a4848;
+        border: 3px groove white;
+    }
+
+    #volValue::-moz-range-thumb {
+        -moz-appearance: none;
+        width: 35px;
+        height: 25px;
+        background-color: #4a4848;
+        border: 3px groove white;
+    }
+
+#volInfo {
+    width: 22px;
+    text-align: center;
+    background-color: black;
+    color: yellow;
+}
+
+#progress {
+    width: inherit;
+    height: 5px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin-bottom: 10px;
+    background-color: #c8c8c8;
+    outline: none;
+}
+
+    #progress::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 10px;
+        height: 5px;
+        background-color: #b60000;
+        cursor: pointer;
+        transition: 0.5s;
+    }
+
+        #progress::-webkit-slider-thumb:hover {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+#book > div {
+    border: 1px groove;
+    width: 348px;
+    height: 200px;
+    float: left;
+}
+
+    #book > div > div {
+        border: 2px groove;
+        background-color: #6fe2f2;
+    }
+
+#book > button {
+    clear: both;
+    width: 100%;
+    background-color: cornflowerblue;
+    font-size: 16px;
+    text-align: center;
+    border: 3px groove white;
+    color: white;
+    font-weight: 900;
+}
+
+.hide {
+    display: none;
+}

@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="hw3.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="bg">
+      <img src="dgball.jpg" />
+    </div>
+    <div id="ControlPanel">
+      <select id="song"></select>
+
+      <hr />
+      <span onclick="Play()" id="btnPlay" title="這是撥放鈕">4</span>
+      <span onclick="Stop()"><</span>
+
+      <!--<span onclick="Pause()"><</span>-->
+      <!--<span onclick="Back()">7</span>-->
+      <!--<span onclick="Run()">8</span>-->
+      <span onclick="changeTime(-5)">7</span>
+      <span onclick="changeTime(5)">8</span>
+
+      <span onclick="changeSong(-1)">9</span>
+      <span onclick="changeSong(1)">:</span>
+      <span onclick="setMuted()">V</span>
+      <span onclick="setLoop()">q</span>
+      <span onclick="setRandom()">s</span>
+      <span onclick="setAllLoop()">`</span>
+      <span onclick="songBook()">@</span>
+      <hr />
+      <input id="progress" type="range" value="0" oninput="setTimeBar()" />
+      <input
+        id="volValue"
+        type="range"
+        max="100"
+        min="0"
+        value="50"
+        oninput="setVolume()"
+      />
+      <input
+        id="Button1"
+        class="btnVol"
+        type="button"
+        value="-"
+        onclick="changeVolume(-1)"
+      />
+      <input
+        id="Button2"
+        class="btnVol"
+        type="button"
+        value="+"
+        onclick="changeVolume(1)"
+      />
+      <input id="volInfo" type="text" readonly />
+      <hr />
+      <div id="info">
+        <marquee>請按下撥放鈕~</marquee>
+        <div>00:00 / 00:00</div>
+        <div>狀態</div>
+      </div>
+      <div id="book" class="hide">
+        <div>
+          <div title="music/ifcan.mp3">如果可以</div>
+          <div title="music/guest.mp3">嘉賓</div>
+          <div title="music/nothere.mp3">不在</div>
+          <div title="music/BOOMBAYAH.mp3">BOOMBAYAH</div>
+          <div title="music/Cheerleader.mp3">Cheerleader</div>
+          <div title="music/dgballgt.mp3">新七龍珠GT</div>
+        </div>
+        <div ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        <button onclick="UpdateMusic()">更新歌單</button>
+      </div>
+    </div>
+
+    <audio id="music">
+      <source type="audio/mpeg" />
+    </audio>
+
+    <script src="hw3.js"></script>
+  </body>
+</html>
