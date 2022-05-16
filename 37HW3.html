@@ -1,0 +1,275 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        .bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: -999;
+            opacity: 0.4;
+        }
+
+            .bg img {
+                min-height: 100%;
+                width: 100%;
+            }
+
+        #ControlPanel{
+            border:3px solid;
+            width:700px;height:400px;
+            margin:auto;
+            text-align:center;           
+        }
+
+        #ControlPanel > span{
+            border:2px solid;
+            padding:3px;
+            box-shadow:2px 2px 5px blue;
+            cursor:pointer;
+            font-family:Webdings;
+            font-size:3rem;
+            border-radius:50%;
+        }
+        #song, #info{
+            width:inherit;
+            font-size:2em;
+            text-align:center;
+            background-color:black;
+            color:yellow;
+        }
+        #info{
+            font-size:2rem;
+        }
+        .btnVol{
+            border-radius:50%;
+            border:1px groove white;
+            box-shadow:0px 0px 1px gray;
+        }
+        #volValue{
+            width:80%;
+            height:8px;
+            -webkit-appearance:none;
+            -moz-appearance:none;
+            border:3px solid #4cff00;
+            background-color:#ff6a00;
+            outline:none;
+        }
+            #volValue::-webkit-slider-thumb{
+                -webkit-appearance:none;
+                width:35px;
+                height:25px;
+                background-color:#b4a24e;
+                border:3px groove white;
+            }
+            #volValue::-moz-range-thumb{
+                -moz-appearance:none;
+                width:35px;
+                height:25px;
+                background-color:#b23ed4;
+                border: 3px groove white;
+            }
+        #volInfo{
+            width:22px;
+            text-align:center;
+            background-color:black;
+            color:yellow;
+        }
+        #progress {
+            width: inherit;
+            height: 5px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            margin-bottom:10px;
+            background-color: #28dbdb;
+            outline: none;
+        }
+
+            #progress::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                width: 10px;
+                height: 5px;
+                background-color: #ff6a00;
+                cursor:pointer;
+                transition:.5s;
+            }
+
+            #progress::-webkit-slider-thumb:hover {
+                width: 25px;
+                height: 25px;
+                border-radius:50%;
+            }
+    </style>
+</head>
+<body>
+    <div class="bg">
+        <img src="dgball.jpg">
+    </div>
+    <div id="ControlPanel">
+        <select id="song">
+            <option value="music/ifcan.mp3">如果可以</option>
+            <option value="music/guest.mp3">嘉賓</option>
+            <option value="music/nothere.mp3">不在</option>
+        </select>
+
+        <hr />
+        <span onclick="Play()" id="btnPlay" title="這是撥放鈕">4</span>
+        <span onclick="Stop()"><</span>
+        
+    <!--<span onclick="Pause()"><</span>-->
+        <!--<span onclick="Back()">7</span>-->
+        <!--<span onclick="Run()">8</span>-->
+        <span onclick="changeTime(-5)">7</span>
+        <span onclick="changeTime(5)">8</span>
+
+        <span onclick="changeSong(-1)">9</span>
+        <span onclick="changeSong(1)">:</span>
+        <hr />
+        <input id="progress" type="range" value="0" oninput="setTimeBar()" />
+        <input id="volValue" type="range" max="100" min="0" value="50" oninput="setVolume()" />
+        <input id="Button1" class="btnVol" type="button" value="-" onclick="changeVolume(-1)" />
+        <input id="Button2" class="btnVol" type="button" value="+" onclick="changeVolume(1)" />
+        <input id="volInfo" type="text" readonly />
+        <hr />
+        <div id="info">
+            <marquee>請按下撥放鈕~</marquee>
+            <div>00:00 / 00:00</div>
+        </div>
+    </div>
+
+    <audio id="music" controls="controls">
+        <source src="music/ifcan.mp3" type="audio/mpeg" title="如果可以" />
+    </audio>
+
+    <script>
+        var audio = document.getElementById("music");
+        var btnPlay = document.getElementById("btnPlay");
+        var volValue = document.getElementById("volValue");
+        var info = document.getElementById("info");
+        var song = document.getElementById("song");
+        var progress = document.getElementById("progress");
+        console.log(audio.children[0].title);
+
+        song.addEventListener('change', function () {
+            changeMusic(song.selectedIndex);
+        });
+
+        function setTimeBar() {
+            audio.currentTime = progress.value;
+            console.log(progess.value);
+        }
+
+        ///切換下一首/上一首
+        function changeSong(i) {
+            var index = song.selectedIndex + i;
+            changeMusic(index);
+        }
+
+        //歌曲切換
+        var musicObj, musicIndex = 0;
+        function changeMusic(i) {
+            /*console.log(song);*/
+
+            //console.log(evt.target.options[evt.target.selectedIndex].value);
+            //musicObj = evt.target.options;
+            //musicIndex = evt.target.selectedIndex;
+
+            song.options[i].selected = true;
+            audio.children[0].src = song.options[i].value;
+            audio.children[0].title = song.options[i].innerText;
+            audio.load();
+
+            if (btnPlay.innerText == ";")
+                Play();
+        }
+        //歌曲撥放時間轉換
+        var min = 0, sec = 0, min2 = 0, sec2 = 0;
+        function getTimeFormat(timeSec) {
+            min = parseInt(timeSec / 60);
+            sec = parseInt(timeSec % 60);            
+            min = min < 10 ? "0" + min : min;  //if (min < 10) min = "0" + min;            
+            sec = sec < 10 ? "0" + sec : sec;  //if (sec < 10) sec = "0" + sec;
+
+            return min + ":" + sec;
+        }
+
+        //取得歌曲撥放時間
+        function getDuration() {
+
+            progress.max = parseInt(audio.duration);
+            progress.value = parseInt(audio.currentTime);
+
+            var w = (audio.currentTime / audio.duration * 100) + "%";
+            progress.style.backgroundImage = "-wedkit-linear-gradient(left,#b60000,#b60000" + w + ",#c8c8c8" + w + ",#c8c8c8)";
+
+            info.children[1].innerText = getTimeFormat(audio.currentTime) + " / " + getTimeFormat(audio.duration);
+            
+            if (audio.currentTime < audio.duration)
+                setTimeout(getDuration, 1);  ///毫秒
+        }
+        //撥放與暫停功能
+        function Play() {
+            if (audio.paused) {
+                audio.play();
+                btnPlay.innerText = ";";
+                info.children[0].innerText = "目前撥放:" + audio.children[0].title;
+                getDuration();
+            }
+            else {
+                audio.pause();
+                btnPlay.innerText = "4";
+                info.children[0].innerText = "音樂暫停中~";
+            }
+        }
+
+        //function Pause() {
+        //    audio.pause();
+        //}
+
+        //停止撥放功能
+        function Stop() {
+            audio.pause();
+            audio.currentTime = 0;   //指定秒數
+            btnPlay.innerText = "4";
+            info.children[0].innerText = "音樂停止";
+        }
+
+        //function Run() {
+        //    audio.currentTime += 5;
+        //}
+
+        //function Back() {
+        //    audio.currentTime -= 5;
+        //}
+
+
+        //快轉與倒轉功能
+        function changeTime(t) {
+            audio.currentTime += t;
+        }
+
+        //音量微調功能
+        function changeVolume(v) {
+            /*audio.voluem += v;*/
+            volValue.value = parseInt(volValue.value) + v;
+
+            setVolume();
+        }
+
+        //音量調整
+        setVolume()
+        function setVolume() {
+            volInfo.value = volValue.value;
+            audio.voluem = volValue.value / 100;
+
+            var z = volValue.value + "%";
+            volValue.style.backgroundImage = "-webkit-liner.gradient(left,#009b72,#009b72" + z + ",#c8c8c8" + z + ",#c8c8c8)";
+        }
+    </script>
+
+</body>
+</html>
